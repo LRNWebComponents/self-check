@@ -204,6 +204,7 @@ A LRN element
             'handles': [
               {
                 'type': 'image',
+                'source': 'image',
                 'title': 'question',
                 'description': 'answer'
               }
@@ -249,22 +250,15 @@ A LRN element
                 'property': 'question',
                 'title': 'Question to ask',
                 'description': 'This is where you enter a question for the self-check.',
-                'inputMethod': 'code-editor',
+                'inputMethod': 'textfield',
                 'required': true,
               },
               {
                 'property': 'answer',
                 'title': 'Answer',
                 'description': 'This is where you enter a question for the self-check.',
-                'inputMethod': 'code-editor',
+                'inputMethod': 'textfield',
                 'required': true,
-              },
-              {
-                'property': 'textColor',
-                'title': 'Font Color',
-                'description': 'Select the primary color used for the font',
-                'inputMethod': 'colorpicker',
-                'icon': 'editor:format-color-fill',
               },
               {
                 'property': 'backgroundColor',
