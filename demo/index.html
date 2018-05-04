@@ -20,7 +20,10 @@
       <h3>Basic self-check demo</h3>
       <demo-snippet>
         <template>
-          <self-check></self-check>
+          <self-check title="self check" image="https://ieltsonlinetests.com/sites/default/files/diagramlarge.png">
+            <span slot="question">What color is the section that has the largest slice of pie in the pie graph?</span>
+            <slot>Orange is the largest section of the pie chart.</slot>
+          </self-check>
         </template>
       </demo-snippet>
     </div>

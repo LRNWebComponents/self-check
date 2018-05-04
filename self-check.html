@@ -1,7 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../materializecss-styles/materializecss-styles.html">
 <link rel="import" href="../hax-body-behaviors/hax-body-behaviors.html">
 <link rel="import" href="../schema-behaviors/schema-behaviors.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <!--
 `self-check`
 A LRN element
@@ -19,23 +20,116 @@ A LRN element
     <style>
       :host {
         display: block;
+        overflow: hidden;
+        --accent-color: #3884FF;
       }
+
+      :host[correct] #answer {
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.5s ease-in-out;
+        height: 50px;
+      }
+
+      paper-icon-button#checkBtn {
+        float: right;
+        margin-bottom: 5px;
+        color: var(--accent-color);
+        width: 50px;
+        height: 50px;
+      }
+
+      iron-icon#checkmark {
+        width: 35px;
+        height: 35px;
+        color: #fff;
+        padding: 5px;
+      }
+
+      .heading {
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 22px;
+        margin: 10px;
+      }
+
+      #header_wrap {
+        display: inline-flex;
+        background-color: var(--accent-color);
+        width: 100%;
+        margin: 10px 0 10px;
+      }
+
+      #question {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: grey;
+      }
+
+      #answer {
+        visibility: hidden;
+        opacity: 0;
+        background-color: #fafafa;
+        padding: 25px;
+        width: 100%;
+      }
+
+      .triangle {
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid var(--accent-color);
+        position: relative;
+        top: 11px;
+        left: -1px;
+      }
+
     </style>
-    <h2>[[title]]</h2>
+
+    <paper-card image="[[image]]">
+        <div class="triangle"></div>
+      <div id="header_wrap">
+        <iron-icon id="checkmark" icon="icons:check-circle"></iron-icon>
+        <div class="heading">[[title]]</div>
+      </div>
+      <div id="question">
+        <slot name="question"></slot>
+      </div>
+      <paper-icon-button id="checkBtn" icon="icons:expand-more" on-click="openAnswer" noink></paper-icon-button>
+    </paper-card>
+
+    <div id="answer" class="dropdown_answer">
+      <slot></slot>
+    </div>
   </template>
 
   <script>
     Polymer({
 
       is: 'self-check',
-      behaviors: [HAXBehaviors.PropertiesBehaviors, MaterializeCSSBehaviors.ColorBehaviors, SchemaBehaviors.Schema],
+      behaviors: [HAXBehaviors.PropertiesBehaviors, SchemaBehaviors.Schema],
       properties: {
-        /**
-         * Title
-         */
         title: {
           type: String,
+          value: '',
         },
+
+        image: {
+          type: String,
+          value: '',
+          reflectToAttribute: true,
+        },
+
+        correct: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+        }
+      },
+
+      openAnswer: function () {
+        this.correct = !this.correct;
       },
       /**
        * Attached to the DOM, now fire.
