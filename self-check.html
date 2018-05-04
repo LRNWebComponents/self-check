@@ -90,12 +90,14 @@ A LRN element
         <div class="heading">[[title]]</div>
       </div>
       <div id="question">
+        [[question]]
         <slot name="question"></slot>
       </div>
       <paper-icon-button id="checkBtn" icon="icons:expand-more" on-click="openAnswer" noink></paper-icon-button>
     </paper-card>
 
     <div id="answer" class="dropdown_answer">
+      [[answer]]
       <slot></slot>
     </div>
   </template>
@@ -111,11 +113,17 @@ A LRN element
         MaterializeCSSBehaviors.ColorBehaviors,
       ],
       properties: {
-
         /**
          * Title.
          */
         title: {
+          type: String,
+          value: '',
+        },
+        /**
+         * Question.
+         */
+        question: {
           type: String,
           value: '',
         },
@@ -194,7 +202,11 @@ A LRN element
             'color': 'orange',
             'groups': ['Video', 'Media'],
             'handles': [
-
+              {
+                'type': 'image',
+                'title': 'question',
+                'description': 'answer'
+              }
             ],
             'meta': {
               'author': 'LRNWebComponents'
@@ -234,16 +246,16 @@ A LRN element
                 'icon': 'editor:insert-photo',
               },
               {
-                'slot': 'question',
-                'title': 'Insert your question:',
+                'property': 'question',
+                'title': 'Question to ask',
                 'description': 'This is where you enter a question for the self-check.',
                 'inputMethod': 'code-editor',
                 'required': true,
               },
               {
-                'slot': '',
-                'title': 'Insert your answer:',
-                'description': 'This is where you enter an answer for the self-check.',
+                'property': 'answer',
+                'title': 'Answer',
+                'description': 'This is where you enter a question for the self-check.',
                 'inputMethod': 'code-editor',
                 'required': true,
               },
