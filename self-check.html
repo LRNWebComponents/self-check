@@ -141,19 +141,16 @@ A LRN element
           'canPosition': true,
           'canEditSource': false,
           'gizmo': {
-            'title': 'Sample gizmo',
-            'description': 'The user will be able to see this for selection in a UI.',
-            'icon': 'av:play-circle-filled',
-            'color': 'grey',
+            'title': 'Self-Check',
+            'description': 'The user will be able to complete a self-check.',
+            'icon': 'icons:check-circle',
+            'color': 'orange',
             'groups': ['Video', 'Media'],
             'handles': [
-              {
-                'type': 'video',
-                'url': 'source'
-              }
+
             ],
             'meta': {
-              'author': 'Your organization on github'
+              'author': 'LRNWebComponents'
             }
           },
           'settings': {
@@ -165,14 +162,43 @@ A LRN element
                 'inputMethod': 'textfield',
                 'icon': 'editor:title',
               },
+              {
+                'property': 'image',
+                'title': 'Image',
+                'description': 'The image of the element',
+                'inputMethod': 'textfield',
+                'icon': 'editor:insert-photo',
+              },
+              
             ],
             'configure': [
-              {
+            {
                 'property': 'title',
                 'title': 'Title',
                 'description': 'The title of the element',
                 'inputMethod': 'textfield',
                 'icon': 'editor:title',
+              },
+              {
+                'property': 'image',
+                'title': 'Image',
+                'description': 'The image of the element',
+                'inputMethod': 'textfield',
+                'icon': 'editor:insert-photo',
+              },
+              {
+                'slot': 'question',
+                'title': 'Insert your question:',
+                'description': 'This is where you enter a question for the self-check.',
+                'inputMethod': 'code-editor',
+                'required': true,
+              },
+              {
+                'slot': '',
+                'title': 'Insert your answer:',
+                'description': 'This is where you enter an answer for the self-check.',
+                'inputMethod': 'code-editor',
+                'required': true,
               },
             ],
             'advanced': [
