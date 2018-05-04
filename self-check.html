@@ -3,6 +3,9 @@
 <link rel="import" href="../schema-behaviors/schema-behaviors.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../materializecss-styles/materializecss-styles.html">
+<link rel="import" href="../a11y-behaviors/a11y-behaviors.html">
+
 <!--
 `self-check`
 A LRN element
@@ -17,11 +20,10 @@ A LRN element
 
 <dom-module id="self-check">
   <template>
-    <style>
+    <style include="materializecss-styles">
       :host {
         display: block;
         overflow: hidden;
-        --accent-color: #3884FF;
       }
 
       :host[correct] #answer {
@@ -34,7 +36,6 @@ A LRN element
       paper-icon-button#checkBtn {
         float: right;
         margin-bottom: 5px;
-        color: var(--accent-color);
         width: 50px;
         height: 50px;
       }
@@ -42,12 +43,10 @@ A LRN element
       iron-icon#checkmark {
         width: 35px;
         height: 35px;
-        color: #fff;
         padding: 5px;
       }
 
       .heading {
-        color: #fff;
         text-transform: uppercase;
         font-size: 22px;
         margin: 10px;
@@ -55,7 +54,6 @@ A LRN element
 
       #header_wrap {
         display: inline-flex;
-        background-color: var(--accent-color);
         width: 100%;
         margin: 10px 0 10px;
       }
@@ -63,7 +61,6 @@ A LRN element
       #question {
         font-size: 16px;
         margin-bottom: 10px;
-        color: grey;
       }
 
       #answer {
@@ -79,17 +76,16 @@ A LRN element
         height: 0;
         border-left: 20px solid transparent;
         border-right: 20px solid transparent;
-        border-bottom: 20px solid var(--accent-color);
+        border-bottom: 20px solid;
         position: relative;
         top: 11px;
         left: -1px;
       }
-
     </style>
 
     <paper-card image="[[image]]">
-        <div class="triangle"></div>
-      <div id="header_wrap">
+      <div class="triangle" style$="border-bottom-color:[[backgroundColor]];"></div>
+      <div id="header_wrap" class$="[[backgroundColorClass]] [[textColorClass]]">
         <iron-icon id="checkmark" icon="icons:check-circle"></iron-icon>
         <div class="heading">[[title]]</div>
       </div>
@@ -108,25 +104,76 @@ A LRN element
     Polymer({
 
       is: 'self-check',
-      behaviors: [HAXBehaviors.PropertiesBehaviors, SchemaBehaviors.Schema],
+      behaviors: [
+        HAXBehaviors.PropertiesBehaviors,
+        SchemaBehaviors.Schema,
+        A11yBehaviors.A11y,
+        MaterializeCSSBehaviors.ColorBehaviors,
+      ],
       properties: {
+
+        /**
+         * Title.
+         */
         title: {
           type: String,
           value: '',
         },
-
+        /**
+         * Image.
+         */
         image: {
           type: String,
           value: '',
           reflectToAttribute: true,
         },
-
+        /**
+         * Property for toggling "checkBtn".
+         */
         correct: {
           type: Boolean,
           value: false,
           reflectToAttribute: true,
-        }
+        },
+        /**
+         * Adjust text color.
+         */
+        textColor: {
+          type: String,
+          value: '#ffffff',
+          reflectToAttribute: true,
+        },
+        /**
+         * Text color color.
+         */
+         textColorClass: {
+          type: String,
+          value: null,
+          reflectToAttribute: true,
+          computed: '_computeColorClass(textColor)',
+        },
+        /**
+         * Background color.
+         */
+         backgroundColor: {
+          type: String,
+          value: '#1e88e5',
+          reflectToAttribute: true,
+          observer: '_backgroundColorChanged',
+        },
+        /**
+         * Text color color.
+         */
+         backgroundColorClass: {
+          type: String,
+          reflectToAttribute: true,
+          computed: '_computeColorClass(backgroundColor)',
+        },
       },
+
+      /**
+       * Property for toggling "checkBtn".
+       */
 
       openAnswer: function () {
         this.correct = !this.correct;
@@ -134,7 +181,7 @@ A LRN element
       /**
        * Attached to the DOM, now fire.
        */
-      attached: function() {
+      attached: function () {
         // Establish hax property binding
         let props = {
           'canScale': true,
@@ -169,10 +216,10 @@ A LRN element
                 'inputMethod': 'textfield',
                 'icon': 'editor:insert-photo',
               },
-              
+
             ],
             'configure': [
-            {
+              {
                 'property': 'title',
                 'title': 'Title',
                 'description': 'The title of the element',
@@ -200,12 +247,63 @@ A LRN element
                 'inputMethod': 'code-editor',
                 'required': true,
               },
+              {
+                'property': 'textColor',
+                'title': 'Font Color',
+                'description': 'Select the primary color used for the font',
+                'inputMethod': 'colorpicker',
+                'icon': 'editor:format-color-fill',
+              },
+              {
+                'property': 'backgroundColor',
+                'title': 'Background color',
+                'description': 'Select the background color used',
+                'inputMethod': 'colorpicker',
+                'icon': 'editor:format-color-fill',
+              }
             ],
             'advanced': [
             ]
           }
         };
         this.setHaxProperties(props);
+      },
+
+      /**
+       * Notice background color changed
+       */
+       _backgroundColorChanged: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined && newValue != null) {
+          // sees if there's enough contrast and adjusts them accordingly
+          this.computeTextPropContrast('textColor', 'backgroundColor');
+        }
+      },
+      /**
+       * Primary color changed, spread into internals.
+       */
+      _primaryColorChanged: function(newValue, oldValue) {
+        if (newValue != null && typeof this.source !== typeof undefined) {
+          this.videoColor = newValue.substring(1);
+          // aggressive rebuild of source so vimeo picks up
+          // the color change and updates the URL to match
+          var source = this.source;
+          this.set('source', '');
+          this.set('source', source);
+        }
+      },
+      /**
+       * Make class from color value
+       */
+      _computeColorClass: function(color) {
+        if (color != null && color.toLowerCase() == '#ffffff') {
+          return 'white-text';
+        }
+        else if (color != null && color == '#000000') {
+          return 'black-text';
+        }
+        else if (color != null && color.substring(0, 1) == '#') {
+          return this._colorTransform(color.toLowerCase(), '', '');
+        }
       },
     });
   </script>
