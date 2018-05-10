@@ -56,7 +56,7 @@ A LRN element
         justify-content: flex-end;
       }
 
-      iron-icon#checkmark {
+      iron-icon#questionmark {
         width: 35px;
         height: 35px;
         padding: 5px;
@@ -137,14 +137,14 @@ A LRN element
     <paper-card image="[[image]]" alt="[[alt]]">
       <div class="triangle" style$="border-bottom-color:[[backgroundColor]];"></div>
       <div id="header_wrap" class$="[[backgroundColorClass]] [[textColorClass]]">
-        <iron-icon id="checkmark" icon="icons:check-circle"></iron-icon>
+        <iron-icon id="questionmark" icon="icons:help"></iron-icon>
         <div class="heading">[[title]]</div>
       </div>
       <div id="question_wrap">
         <div class="question">
           <slot name="question"></slot>
           <div class="check_button">
-            <paper-icon-button id="checkBtn" icon="icons:touch-app" on-click="openAnswer" noink></paper-icon-button>
+            <paper-icon-button id="checkBtn" icon="icons:check-circle" on-click="openAnswer" noink></paper-icon-button>
             <paper-tooltip for="checkBtn" position="left">Reveal Answer</paper-tooltip>
           </div>
         </div>
