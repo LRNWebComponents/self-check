@@ -287,7 +287,7 @@ A LRN element
             'description': 'The user will be able to complete a self-check.',
             'icon': 'icons:check-circle',
             'color': 'orange',
-            'groups': ['Video', 'Media'],
+            'groups': ['Image', 'Assessment'],
             'handles': [
               {
                 'type': 'image',
@@ -324,14 +324,18 @@ A LRN element
                 'title': 'Title',
                 'description': 'The title of the element',
                 'inputMethod': 'textfield',
-                'icon': 'editor:title',
               },
               {
                 'property': 'image',
                 'title': 'Image',
                 'description': 'The image of the element',
                 'inputMethod': 'textfield',
-                'icon': 'editor:insert-photo',
+              },
+              {
+                'property': 'alt',
+                'title': 'Alt Text',
+                'description': 'Add alt text to the image',
+                'inputMethod': 'alt',
               },
               {
                 'slot': 'question',
@@ -352,15 +356,7 @@ A LRN element
                 'title': 'Background color',
                 'description': 'Select the background color used',
                 'inputMethod': 'colorpicker',
-                'icon': 'editor:format-color-fill',
               },
-              {
-                'property': 'alt',
-                'title': 'Alt Text',
-                'description': 'Add alt text to the image',
-                'inputMethod': 'alt',
-                'icon': 'editor:text-fields',
-              }
             ],
             'advanced': [
             ]
