@@ -3,6 +3,7 @@
 <link rel="import" href="../schema-behaviors/schema-behaviors.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/editor-icons.html">
 <link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../materializecss-styles/materializecss-styles.html">
 <link rel="import" href="../a11y-behaviors/a11y-behaviors.html">
@@ -132,6 +133,10 @@ A LRN element
         top: -20px;
         left: -1px;
       }
+
+      .more_info {
+        margin-top: 10px;
+      }
     </style>
 
     <paper-card image="[[image]]" alt="[[alt]]">
@@ -152,6 +157,13 @@ A LRN element
         <div id="answer_wrap">
           <div class="answer" class="dropdown_answer">
             <slot></slot>
+            <div class="more_info">
+              <a href="[[link]]" target="_blank">
+                <paper-icon-button id="infoBtn" icon="editor:insert-link" noink></paper-icon-button>
+              </a>
+              <paper-tooltip for="infoBtn" position="right">More information</paper-tooltip>
+
+            </div>
             <div class="close_button">
               <paper-icon-button id="closeBtn" icon="icons:close" on-click="openAnswer" noink></paper-icon-button>
             </div>
@@ -197,7 +209,15 @@ A LRN element
         /**
          * Alt text for image.
          */
-         alt: {
+        alt: {
+          type: String,
+          value: '',
+          reflectToAttribute: true,
+        },
+        /**
+         * Link for more information.
+         */
+        link: {
           type: String,
           value: '',
           reflectToAttribute: true,
